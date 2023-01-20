@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace DataAccessLayer.Abstract
 {
@@ -12,7 +13,7 @@ namespace DataAccessLayer.Abstract
         void Delete(T t);
         void Update(T t);
         List<T> GetListAll();
-
         T GetById(int id);
+        List<T> GetListAll(Expression<Func<T, bool>> filter);
     }
 }

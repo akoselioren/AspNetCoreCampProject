@@ -13,7 +13,7 @@ namespace CoreCampProject.ViewComponents.Category
 
         public IViewComponentResult Invoke()
         {
-            var values=cm.GetAllCategories();
+            var values=cm.GetList();
             return View(values);
         }
     }

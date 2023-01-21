@@ -3,27 +3,21 @@
     ViewData["Title"] = "LoginIndex";
     Layout = "~/Views/Shared/UserLayout.cshtml";
 }
-
-<!--
-	Author: W3layouts
-	Author URL: http://w3layouts.com
-	License: Creative Commons Attribution 3.0 Unported
-	License URL: http://creativecommons.org/licenses/by/3.0/
--->
+<title>Kullanıcı Girişi</title>
 
 <section class="main-content-w3layouts-agileits">
 	<div class="container">
 		<h3 class="tittle">Şimdi Giriş Yap</h3>
 		<div class="row inner-sec">
 			<div class="login p-5 bg-light mx-auto mw-100">
-				<form action="#" method="post">
+				<form method="post">
 					<div class="form-group">
 						<label for="exampleInputEmail1 mb-2">Mail Adresi</label>
-						<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" required="">
+						<input type="email" class="form-control" name="WriterMail" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="" required="">
 					</div>
 					<div class="form-group">
 						<label for="exampleInputPassword1 mb-2">Şifre</label>
-						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="" required="">
+						<input type="password" name="WriterPassword" class="form-control" id="exampleInputPassword1" placeholder="" required="">
 					</div>
 					<div class="form-check mb-2">
 						<input type="checkbox" class="form-check-input" id="exampleCheck1">

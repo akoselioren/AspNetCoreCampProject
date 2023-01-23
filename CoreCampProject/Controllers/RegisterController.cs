@@ -24,7 +24,7 @@ namespace CoreCampProject.Controllers
             {
 				p.WriterStatus = true;
 				p.WriterAbout = "Hakkında bir kaç bilgi bizimle palaşırmısın ?";
-				wm.WriterAdd(p);
+				wm.TAdd(p);
 				return RedirectToAction("Index", "Blog");
 			}
             else

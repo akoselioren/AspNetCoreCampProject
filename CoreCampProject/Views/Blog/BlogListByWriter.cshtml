@@ -1,0 +1,70 @@
+﻿@using EntityLayer.Concrete
+@model List<Blog>
+@{
+    ViewData["Title"] = "BlogListByWriter";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<h1>Yazarın Blogları</h1>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Blog Başlığı</th>
+        <th>Oluşturulma Tarihi</th>
+        <th>Kategori</th>
+        <th>Durum</th>
+        <th>Sil</th>
+        <th>Düzenle</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>@item.BlogID</th>
+            <td>@item.BlogTitle</td>
+            <td>@(((DateTime)item.BlogCreateDate).ToString("dd-MMM-yyyy"))</td>
+            <td>@item.CategoryID</td>
+            <td>
+                @if (item.BlogStatus)
+                {
+                    <span class="badge badge-success">Aktif</span>
+                }
+                else
+                {
+                    <span class="badge badge-secondary">Pasif</span>
+                }
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Sil_@item.BlogID">Sil</button>
+            
+            <!--Modal-->
+            <div class="modal fade" id="Sil_@item.BlogID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Sil</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h4>Bloğu silmek istediğinizden eminmisiniz?</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-info mx-4" data-dismiss="modal">Vazgeç</button>
+                            @Html.ActionLink("Sil", "DeleteBlog", new { id = @item.BlogID }, new { @class = "btn btn-danger mx-4" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </td>
+            <td><a href="/Blog/EditBlog/@item.BlogID" class="btn btn-warning">Düzenle</a></td>
+            
+        </tr>
+    }
+</table>
+<p align="right">
+    <a href="/Blog/BlogAdd/" class="btn btn-info">Yeni Blog Oluştur</a>
+</p>
+

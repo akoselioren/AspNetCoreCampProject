@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLayer.Concrete;
+using DataAccessLayer.EntityFramework;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CoreCampProject.ViewComponents.Writer
 {
     public class WriterMessageNotification : ViewComponent
     {
-        public IViewComponentResult Invoke(int id)
+        Message2Manager mm = new Message2Manager(new EfMessage2Repository());
+        public IViewComponentResult Invoke()
         {
-            return View();
+            int id =1;
+            var values = mm.GetInboxListWithByWriter(id);
+            return View(values);
         }
     }
 }

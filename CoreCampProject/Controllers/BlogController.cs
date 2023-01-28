@@ -33,8 +33,9 @@ namespace CoreCampProject.Controllers
         }
         public IActionResult BlogListByWriter()
         {
-            var userMail = User.Identity.Name;
-            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+            var username = User.Identity.Name;
+            var usermail = c.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
+            var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
             var values = bm.GetBlogListByWriter(writerID);
             return View(values);
         }
@@ -59,8 +60,9 @@ namespace CoreCampProject.Controllers
                 ValidationResult results = bv.Validate(p);
                 if (results.IsValid)
                 {
-                var userMail = User.Identity.Name;
-                var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+                var username = User.Identity.Name;
+                var usermail = c.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
+                var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
                 p.BlogStatus = true;
                     p.BlogCreateDate=DateTime.Parse(DateTime.Now.ToShortDateString());
                     p.WriterID = writerID;
@@ -98,8 +100,10 @@ namespace CoreCampProject.Controllers
         [HttpPost]
         public IActionResult EditBlog(Blog p)
         {
+            var username = User.Identity.Name;
+            var usermail = c.Users.Where(x => x.UserName == username).Select(y => y.Email).FirstOrDefault();
+            var writerID = c.Writers.Where(x => x.WriterMail == usermail).Select(y => y.WriterID).FirstOrDefault();
             var userMail = User.Identity.Name;
-            var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
             var blogValue = bm.TGetById(p.BlogID);
             p.WriterID=writerID;
             p.BlogCreateDate = DateTime.Parse(blogValue.BlogCreateDate.ToShortDateString());

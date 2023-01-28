@@ -20,7 +20,7 @@ namespace BusinessLayer.Concrete
 
         public List<Message2> GetInboxListWithByWriter(int id)
         {
-            return _message2Dal.GetListWithMessageByWriter(id);
+            return _message2Dal.GetInboxWithMessageByWriter(id);
         }
 
         public List<Message2> GetList()
@@ -28,9 +28,14 @@ namespace BusinessLayer.Concrete
             return _message2Dal.GetListAll();
         }
 
+        public List<Message2> GetSendboxListWithByWriter(int id)
+        {
+            return _message2Dal.GetSendboxWithMessageByWriter(id);
+        }
+
         public void TAdd(Message2 t)
         {
-            throw new NotImplementedException();
+           _message2Dal.Insert(t);
         }
 
         public void TDelete(Message2 t)

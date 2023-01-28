@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
@@ -35,8 +36,9 @@ namespace CoreCampProject
                 x.Password.RequireUppercase = false;
                 x.Password.RequireNonAlphanumeric=false; 
             }).AddEntityFrameworkStores<Context>();
-            services.AddSession();
             services.AddControllersWithViews();
+
+            services.AddSession();
 
             services.AddMvc(config =>
             {
@@ -50,8 +52,17 @@ namespace CoreCampProject
                     CookieAuthenticationDefaults.AuthenticationScheme
                 ).AddCookie(x =>
                 {
-                    x.LoginPath = "/Login/LoginIndex/";
+                    x.LoginPath = "/Login/LoginIndex";
                 });
+            services.ConfigureApplicationCookie(opts =>
+            {
+                //Cookie settings
+                opts.Cookie.HttpOnly = true;
+                opts.ExpireTimeSpan = TimeSpan.FromMinutes(40);
+                opts.AccessDeniedPath = new PathString("/Login/AccessDenied/");
+                opts.LoginPath = "/Login/Index/";
+                opts.SlidingExpiration = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -20,18 +20,17 @@ namespace CoreCampProject.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
 
-		public WriterController(UserManager<AppUser> userManager)
-		{
-			this._userManager = userManager;
-		}
+        public WriterController(UserManager<AppUser> userManager)
+        {
+            this._userManager = userManager;
+        }
 
-		WriterManager wm = new WriterManager(new EfWriterRepository());
-        UserManager userManager = new UserManager(new EfUserRepository());
+        WriterManager wm = new WriterManager(new EfWriterRepository());
         public IActionResult WriterIndex()
         {
             var userMail = User.Identity.Name;
             ViewBag.v = userMail;
-            Context c=new Context();
+            Context c = new Context();
             var writerName = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault();
             ViewBag.v2 = writerName;
             return View();
@@ -50,33 +49,27 @@ namespace CoreCampProject.Controllers
             return PartialView();
         }
         [HttpGet]
-        public IActionResult WriterEditProfile()
+        public async Task<IActionResult> WriterEditProfile()
         {
-			Context c = new Context();
-			var username = User.Identity.Name;
-			var usermail=c.Users.Where(x=>x.UserName==username).Select(y => y.Email).FirstOrDefault();
-			var id = c.Users.Where(x => x.Email == usermail).Select(y => y.Id).FirstOrDefault();
-            var values =userManager.TGetById(id);
-			return View(values);
-		}
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            UserUpdateViewModel model = new UserUpdateViewModel();
+            model.mail = values.Email;
+            model.namesurname = values.NameSurname;
+            model.imageurl = values.ImageUrl;
+            model.username = values.UserName;
+            return View(model);
+        }
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer p)
+        public async Task<IActionResult> WriterEditProfile(UserUpdateViewModel model)
         {
-            WriterValidator wl = new WriterValidator();
-            ValidationResult result = wl.Validate(p);
-            if (result.IsValid)
-            {
-                wm.TUpdate(p);
-                return RedirectToAction("Index", "DashBoard");
-            }
-            else
-            {
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-            }
-            return View();
+            var values = await _userManager.FindByNameAsync(User.Identity.Name);
+            values.NameSurname = model.namesurname;
+            values.ImageUrl = model.imageurl;
+            values.Email = model.mail;
+            values.UserName = model.username;
+            values.PasswordHash = _userManager.PasswordHasher.HashPassword(values, model.password);
+            var result = await _userManager.UpdateAsync(values);
+            return RedirectToAction("Index", "DashBoard");
         }
         [HttpGet]
         public IActionResult WriterAdd()
@@ -87,7 +80,7 @@ namespace CoreCampProject.Controllers
         public IActionResult WriterAdd(AddProfileImage p)
         {
             Writer w = new Writer();
-            if (p.WriterImage!=null)
+            if (p.WriterImage != null)
             {
                 var extension = Path.GetExtension(p.WriterImage.FileName);
                 var newimagename = Guid.NewGuid() + extension;
@@ -96,9 +89,9 @@ namespace CoreCampProject.Controllers
                 p.WriterImage.CopyTo(stream);
                 w.WriterImage = newimagename;
             }
-            w.WriterMail=p.WriterMail;
+            w.WriterMail = p.WriterMail;
             w.WriterName = p.WriterName;
-            w.WriterPassword=p.WriterPassword;
+            w.WriterPassword = p.WriterPassword;
             w.WriterStatus = true;
             w.WriterAbout = p.WriterAbout;
             wm.TAdd(w);

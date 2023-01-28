@@ -1,3 +1,5 @@
+using DataAccessLayer.Concrete;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +29,12 @@ namespace CoreCampProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<Context>();
+            services.AddIdentity<AppUser, AppRole>(x => 
+            {
+                x.Password.RequireUppercase = false;
+                x.Password.RequireNonAlphanumeric=false; 
+            }).AddEntityFrameworkStores<Context>();
             services.AddSession();
             services.AddControllersWithViews();
 
@@ -42,7 +50,7 @@ namespace CoreCampProject
                     CookieAuthenticationDefaults.AuthenticationScheme
                 ).AddCookie(x =>
                 {
-                    x.LoginPath = "/Login/LoginIndex";
+                    x.LoginPath = "/Login/LoginIndex/";
                 });
         }
 

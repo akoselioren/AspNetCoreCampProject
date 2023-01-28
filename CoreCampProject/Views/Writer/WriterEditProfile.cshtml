@@ -1,4 +1,4 @@
-﻿@model EntityLayer.Concrete.Writer
+﻿@model EntityLayer.Concrete.AppUser
 @{
     ViewData["Title"] = "WriterEditProfile";
     Layout = "~/Views/Shared/WriterLayout.cshtml";
@@ -12,22 +12,27 @@
             <div class="card-body">
                 <h4 class="card-title">Blogger Profil Bilgileri Ayarlar Sayfası</h4>
                 <br />
-                @Html.HiddenFor(x=>x.WriterID,new {@class ="form-control"})
+                @Html.HiddenFor(x=>x.Id,new {@class ="form-control"})
                 <form class="forms-sample">
                     <div class="form-group">
                         <label for="exampleInputName1">Ad Soyad</label>
-                        @Html.TextBoxFor(x=>x.WriterName,new {@class ="form-control"})
-                        @Html.ValidationMessageFor(x=>x.WriterName)
+                        @Html.TextBoxFor(x=>x.NameSurname,new {@class ="form-control"})
+                        @Html.ValidationMessageFor(x=>x.NameSurname)
+                    </div>
+                     <div class="form-group">
+                        <label for="exampleInputName1">Kullanıcı Adı</label>
+                        @Html.TextBoxFor(x=>x.UserName,new {@class ="form-control"})
+                        @Html.ValidationMessageFor(x=>x.UserName)
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail3">Mail Adresi</label>
-                        @Html.TextBoxFor(x=>x.WriterMail,new {@class ="form-control"})
-                        @Html.ValidationMessageFor(x=>x.WriterMail)
+                        @Html.TextBoxFor(x=>x.Email,new {@class ="form-control"})
+                        @Html.ValidationMessageFor(x=>x.Email)
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword4">Şifre</label>
-                        @Html.PasswordFor(x=>x.WriterPassword,new {@class ="form-control"})
-                        @Html.ValidationMessageFor(x=>x.WriterPassword)
+                        @Html.PasswordFor(x=>x.PasswordHash,new {@class ="form-control"})
+                        @Html.ValidationMessageFor(x=>x.PasswordHash)
                     </div>
                     <div class="form-group">
                         <label>Profil Görseli Yükle</label>
@@ -39,11 +44,11 @@
                             </span>
                         </div>
                     </div>
-                    <div class="form-group">
+                   @* <div class="form-group">
                         <label for="exampleTextarea1">Yazar Hakınnda</label>
                         @Html.TextAreaFor(x=>x.WriterAbout,10,5,new {@class ="form-control"})
                         @Html.ValidationMessageFor(x=>x.WriterAbout)
-                    </div>
+                    </div>*@
                     <button type="submit" class="btn btn-gradient-primary mr-2">Kaydet</button>
                     <button  class="btn btn-light">Vazgeç</button>
                 </form>

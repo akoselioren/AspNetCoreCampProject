@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -17,12 +18,14 @@ namespace CoreCampProject.Controllers
         CategoryManager cm = new CategoryManager(new EfCategoryRepository());
         BlogManager bm= new BlogManager(new EfBlogRepository());
         Context c = new Context();
-        public IActionResult Index()
+		[AllowAnonymous]
+		public IActionResult Index()
         {
             var values = bm.GetBlogListWithCategory();
             return View(values);
         }
-        public IActionResult BlogReadAll(int id)
+		[AllowAnonymous]
+		public IActionResult BlogReadAll(int id)
         {
             ViewBag.i = id;
             var values=bm.GetBlogByID(id);
